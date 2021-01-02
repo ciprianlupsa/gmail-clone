@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-import { Avatar, Button } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { Avatar, Box, Button, IconButton } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+import DuoIcon from '@material-ui/icons/Duo';
+import PhoneIcon from '@material-ui/icons/Phone';
 
 import { SidebarMainSchema } from './SidebarList/ListItems';
 import SidebarList from './SidebarList/SidebarList';
-import { SidebarListGroup } from './SidebarList/SidebarListGroup.model';
 
 import useSidebarStyle from './SidebarStyle';
+import ItterableList from '../../classes/ItterableList';
+import { SidebarListItem } from './SidebarList/SidebarItem.model';
 
 const Sidebar: React.FC = () => {
   const [lists] = useState(SidebarMainSchema);
@@ -25,9 +28,21 @@ const Sidebar: React.FC = () => {
         Compose
       </Button>
 
-      {lists.map((list: SidebarListGroup) => {
+      {lists.map((list: ItterableList<SidebarListItem>) => {
         return <SidebarList key={list.id} {...list} />;
       })}
+
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <IconButton>
+          <PersonIcon></PersonIcon>
+        </IconButton>
+        <IconButton>
+          <DuoIcon></DuoIcon>
+        </IconButton>
+        <IconButton>
+          <PhoneIcon></PhoneIcon>
+        </IconButton>
+      </Box>
     </section>
   );
 };

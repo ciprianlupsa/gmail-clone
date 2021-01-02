@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { Box, Divider } from '@material-ui/core';
 import List from '@material-ui/core/List';
@@ -6,10 +6,9 @@ import List from '@material-ui/core/List';
 import useSidebarListStyle from './SidebarListStyle';
 import SidebarItem from './SidebarItem/SidebarItem';
 import { SidebarListItem } from './SidebarItem.model';
-import { SidebarMainSchema } from './ListItems';
-import { SidebarListGroup } from './SidebarListGroup.model';
+import ItterableList from '../../../classes/ItterableList';
 
-const SidebarList: React.FC<SidebarListGroup> = ({
+const SidebarList: React.FC<ItterableList<SidebarListItem>> = ({
   id,
   listItems,
   heading,

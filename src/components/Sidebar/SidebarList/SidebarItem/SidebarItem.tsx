@@ -13,20 +13,19 @@ type ActiveProps = { color?: string };
 
 const SidebarItem: React.FC<SidebarListItem> = ({
   text,
-  icon,
+  Icon,
   action,
   count,
   selected,
 }) => {
   const classes = useSidebarItemStyle();
 
-  const activeColor: ActiveProps = selected ? { color: 'primary.main' } : {};
-
   return (
-    <ListItem button className={classes.item}>
-      <ListItemIcon className={classes.itemIcon} {...activeColor}>
-        {icon}
-      </ListItemIcon>
+    <ListItem
+      button
+      className={`${classes.item} ${selected && classes.itemActive}`}
+    >
+      <ListItemIcon className={`${classes.itemIcon}`}>{Icon}</ListItemIcon>
       <ListItemText
         primary={
           <Box
@@ -37,16 +36,11 @@ const SidebarItem: React.FC<SidebarListItem> = ({
             <Box
               component="span"
               fontWeight={count ? 'fontWeightBold' : 'fontWeightRegular'}
-              {...activeColor}
             >
               {text}
             </Box>
             {count && (
-              <Box
-                component="span"
-                fontWeight="fontWeightBold"
-                {...activeColor}
-              >
+              <Box component="span" fontWeight="fontWeightBold">
                 {count}
               </Box>
             )}

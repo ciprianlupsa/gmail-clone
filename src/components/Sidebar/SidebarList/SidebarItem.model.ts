@@ -1,9 +1,10 @@
-import ItterableComponent from '../../../utils/ItterableComponent';
+import { ReactElement } from 'react';
+import ItterableComponent from '../../../classes/ItterableComponent';
 
 export class SidebarListItem extends ItterableComponent {
   constructor(
     public text: string,
-    public icon: JSX.Element, // not great, can be any element
+    public Icon: ReactElement, // not great, can be any element
     public action: Function | undefined = undefined,
     public count: number | undefined = undefined,
     public selected: boolean = false
