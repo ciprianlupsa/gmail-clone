@@ -1,12 +1,6 @@
-import {
-  Box,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@material-ui/core';
+import { Box, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React from 'react';
-import { SidebarListItem } from '../SidebarItem.model';
+import { SidebarListItem } from './SidebarItem.model';
 import useSidebarItemStyle from './SidebarItemStyle';
 
 type ActiveProps = { color?: string };

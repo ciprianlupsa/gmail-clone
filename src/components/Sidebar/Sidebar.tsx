@@ -10,7 +10,7 @@ import SidebarList from './SidebarList/SidebarList';
 
 import useSidebarStyle from './SidebarStyle';
 import ItterableList from '../../classes/ItterableList';
-import { SidebarListItem } from './SidebarList/SidebarItem.model';
+import { SidebarListItem } from './SidebarList/SidebarItem/SidebarItem.model';
 
 const Sidebar: React.FC = () => {
   const [lists] = useState(SidebarMainSchema);

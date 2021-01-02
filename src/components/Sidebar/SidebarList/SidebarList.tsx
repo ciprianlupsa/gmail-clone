@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 
 import useSidebarListStyle from './SidebarListStyle';
 import SidebarItem from './SidebarItem/SidebarItem';
-import { SidebarListItem } from './SidebarItem.model';
+import { SidebarListItem } from './SidebarItem/SidebarItem.model';
 import ItterableList from '../../../classes/ItterableList';
 
 const SidebarList: React.FC<ItterableList<SidebarListItem>> = ({

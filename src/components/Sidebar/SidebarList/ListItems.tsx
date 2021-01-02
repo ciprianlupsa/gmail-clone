@@ -1,5 +1,5 @@
 import React from 'react';
-import { SidebarListItem } from './SidebarItem.model';
+import { SidebarListItem } from './SidebarItem/SidebarItem.model';
 
 import { StarBorder } from '@material-ui/icons';
 import InboxIcon from '@material-ui/icons/Inbox';

@@ -1,6 +1,6 @@
-import ItterableComponent from './ItterableComponent';
+import UniqueObject from './UniqueObject';
 
-class ItterableList<T> extends ItterableComponent {
+class ItterableList<T> extends UniqueObject {
   constructor(
     public listItems: Array<T>,
     public heading: string | null = null
