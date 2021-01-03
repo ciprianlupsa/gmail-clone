@@ -17,7 +17,7 @@ const EmailTools = () => {
   const history = useHistory();
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" justifyContent="space-between">
       <IconButtonTooltip
         action={() => history.goBack()}
         size="small"

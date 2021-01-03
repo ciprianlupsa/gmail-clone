@@ -1,6 +1,6 @@
 import { Box, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React from 'react';
-import { SELECTED_COLOR } from '../../../../constants/app';
+import { SELECTED_COLOR } from '../../../../app/constants';
 import useColorClasses from '../../../../hooks/style-hooks/useColorClasses';
 import { SidebarListItem } from './SidebarItem.model';
 import useSidebarItemStyle from './SidebarItemStyle';

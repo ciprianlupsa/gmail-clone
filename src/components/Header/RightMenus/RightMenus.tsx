@@ -1,5 +1,6 @@
-import { Avatar, Box, IconButton, Tooltip } from '@material-ui/core';
 import React from 'react';
+
+import { Avatar, Box, IconButton, Tooltip } from '@material-ui/core';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';

@@ -5,8 +5,9 @@ import { Box, Checkbox, Divider } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import RedoIcon from '@material-ui/icons/Redo';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { ChevronLeft, ChevronRight, KeyboardHide } from '@material-ui/icons';
+
 import IconButtonTooltip from '../../IconButtonTooltip/IconButtonTooltip';
+import EmailNavigation from '../../EmailNavigation/EmailNavigation';
 
 const EmailListSettings = () => {
   return (
@@ -33,23 +34,7 @@ const EmailListSettings = () => {
           </IconButtonTooltip>
         </Box>
 
-        <Box>
-          <IconButtonTooltip size="small" tooltip="Older">
-            <ChevronLeft />
-          </IconButtonTooltip>
-          <IconButtonTooltip size="small" tooltip="Newer">
-            <ChevronRight />
-          </IconButtonTooltip>
-          <IconButtonTooltip
-            size="small"
-            tooltip="Input tools on/off (Ctrl-Shift-K)"
-          >
-            <KeyboardHide />
-          </IconButtonTooltip>
-          <IconButtonTooltip size="small" tooltip="Select Input Tool">
-            <ArrowDropDownIcon />
-          </IconButtonTooltip>
-        </Box>
+        <EmailNavigation />
       </Box>
       <Divider />
     </>
