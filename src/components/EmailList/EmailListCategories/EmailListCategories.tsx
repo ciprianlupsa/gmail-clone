@@ -1,7 +1,18 @@
+import { Box } from '@material-ui/core';
 import React from 'react';
 
+import CategoryList from './CategoryList';
+import EmailListCategory from './EmailListCategory/EmailListCategory';
+import EmailListCategoryItem from './EmailListCategory/EmailListCategoryItem.model';
+
 const EmailListCategories = () => {
-  return <div></div>;
+  return (
+    <Box>
+      {CategoryList.listItems.map((item: EmailListCategoryItem) => (
+        <EmailListCategory {...item} />
+      ))}
+    </Box>
+  );
 };
 
 export default EmailListCategories;

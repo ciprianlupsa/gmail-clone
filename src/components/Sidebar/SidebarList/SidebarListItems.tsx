@@ -11,7 +11,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
 import ItterableList from '../../../classes/ItterableList';
 
-const SidebarMainSchema: Array<ItterableList<SidebarListItem>> = [
+const SidebarListItems: Array<ItterableList<SidebarListItem>> = [
   new ItterableList<SidebarListItem>(
     [
       new SidebarListItem('Inbox', <InboxIcon />, undefined, 15, true),
@@ -32,4 +32,4 @@ const SidebarMainSchema: Array<ItterableList<SidebarListItem>> = [
   new ItterableList<SidebarListItem>([], 'Hangouts'),
 ];
 
-export { SidebarMainSchema };
+export default SidebarListItems;
