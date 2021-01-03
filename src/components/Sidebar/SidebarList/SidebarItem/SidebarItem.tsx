@@ -14,10 +14,10 @@ const SidebarItem: React.FC<SidebarListItem> = ({
   selected,
 }) => {
   const classes = useSidebarItemStyle();
-  const transformColors = useColorTransform('primary')();
+  const transformColors = useColorTransform('primary');
   const listItemClasses = selected
-    ? `${classes.itemActive} ${transformColors.primaryActive}`
-    : `${transformColors.primaryHover}`;
+    ? `${classes.itemActive} ${transformColors.active}`
+    : `${transformColors.hover}`;
 
   return (
     <ListItem button className={`${classes.item} ${listItemClasses}`}>

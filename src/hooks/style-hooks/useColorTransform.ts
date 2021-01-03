@@ -1,6 +1,7 @@
 import { Color } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { SimplePaletteColorOptions } from '@material-ui/core/styles/createPalette';
+import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 type AcceptedColors =
   | 'primary'
@@ -14,6 +15,11 @@ type AcceptedColors =
 interface Colors {
   color: string;
   backgroundColor?: string;
+}
+
+interface ConstructedClassesReturnType {
+  hover: { '&:hover': CSSProperties };
+  active: CSSProperties;
 }
 
 const turnColors = (
@@ -32,14 +38,14 @@ const turnColors = (
   };
 };
 
-const constructClasses = (colorName: AcceptedColors, colors: Colors) => {
+const constructClasses = (colors: Colors): ConstructedClassesReturnType => {
   return {
-    [colorName + 'Hover']: {
+    hover: {
       '&:hover': {
         ...colors,
       },
     },
-    [colorName + 'Active']: {
+    active: {
       ...colors,
     },
   };
@@ -51,7 +57,7 @@ const useColorTransform = (colorName: AcceptedColors) =>
       theme.palette[colorName];
     const colorStyleObject = turnColors(colorOptions);
 
-    return constructClasses(colorName, colorStyleObject);
-  });
+    return constructClasses(colorStyleObject);
+  })();
 
 export default useColorTransform;
