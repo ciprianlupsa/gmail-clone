@@ -9,7 +9,7 @@ const EmailListCategories = () => {
   return (
     <Box>
       {CategoryList.listItems.map((item: EmailListCategoryItem) => (
-        <EmailListCategory {...item} />
+        <EmailListCategory key={item.id} {...item} />
       ))}
     </Box>
   );

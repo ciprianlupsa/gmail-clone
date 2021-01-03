@@ -1,9 +1,10 @@
 import { Box, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React from 'react';
+import useColorTransform from '../../../../hooks/style-hooks/useColorTransform';
 import { SidebarListItem } from './SidebarItem.model';
 import useSidebarItemStyle from './SidebarItemStyle';
 
-type ActiveProps = { color?: string };
+// type ActiveProps = { color?: string };
 
 const SidebarItem: React.FC<SidebarListItem> = ({
   text,
@@ -13,12 +14,13 @@ const SidebarItem: React.FC<SidebarListItem> = ({
   selected,
 }) => {
   const classes = useSidebarItemStyle();
+  const transformColors = useColorTransform('primary')();
+  const listItemClasses = selected
+    ? `${classes.itemActive} ${transformColors.primaryActive}`
+    : `${transformColors.primaryHover}`;
 
   return (
-    <ListItem
-      button
-      className={`${classes.item} ${selected && classes.itemActive}`}
-    >
+    <ListItem button className={`${classes.item} ${listItemClasses}`}>
       <ListItemIcon className={`${classes.itemIcon}`}>{Icon}</ListItemIcon>
       <ListItemText
         primary={

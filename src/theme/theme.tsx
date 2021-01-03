@@ -1,8 +1,6 @@
 import { createMuiTheme, ThemeOptions } from '@material-ui/core';
 import { deepOrange, teal, red } from '@material-ui/core/colors';
 
-import globalStyles from './globals';
-
 const themeOptions: ThemeOptions = {
   palette: {
     // type: 'dark',
@@ -19,9 +17,6 @@ const themeOptions: ThemeOptions = {
     },
   },
   overrides: {
-    MuiCssBaseline: {
-      ...globalStyles,
-    },
     MuiButton: {
       root: {
         textTransform: 'none',
