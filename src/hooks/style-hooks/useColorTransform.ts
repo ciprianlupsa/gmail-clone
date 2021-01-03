@@ -17,10 +17,7 @@ interface Colors {
   backgroundColor?: string;
 }
 
-interface ConstructedClassesReturnType {
-  hover: { '&:hover': CSSProperties };
-  active: CSSProperties;
-}
+type ConstructedClassesReturnType = { [name: string]: CSSProperties };
 
 const turnColors = (
   colorOptions: SimplePaletteColorOptions | Color

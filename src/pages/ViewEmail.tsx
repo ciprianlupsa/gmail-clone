@@ -1,10 +1,14 @@
+import { Box } from '@material-ui/core';
 import React from 'react';
+import EmailTools from '../components/EmailTools/EmailTools';
 
 const ViewEmail: React.FC = () => {
   return (
-    <div>
-      <h1>Email</h1>
-    </div>
+    <section>
+      <Box>
+        <EmailTools />
+      </Box>
+    </section>
   );
 };
 

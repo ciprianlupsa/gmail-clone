@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core';
+import { Box, Divider } from '@material-ui/core';
 import React from 'react';
 
 import CategoryList from './CategoryList';
@@ -7,11 +7,14 @@ import EmailListCategoryItem from './EmailListCategory/EmailListCategoryItem.mod
 
 const EmailListCategories = () => {
   return (
-    <Box>
-      {CategoryList.listItems.map((item: EmailListCategoryItem) => (
-        <EmailListCategory key={item.id} {...item} />
-      ))}
-    </Box>
+    <section>
+      <Box display="flex">
+        {CategoryList.listItems.map((item: EmailListCategoryItem) => (
+          <EmailListCategory key={item.id} {...item} />
+        ))}
+      </Box>
+      <Divider />
+    </section>
   );
 };
 

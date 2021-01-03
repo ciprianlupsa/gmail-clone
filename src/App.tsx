@@ -16,7 +16,7 @@ const App: React.FC = () => {
         <Route exact path="/list" component={MainLayout(ViewEmailList)} />
       </Switch>
       <Switch>
-        <Route exact path="/email" component={MainLayout(ViewEmail)} />
+        <Route exact path="/mail" component={MainLayout(ViewEmail)} />
       </Switch>
     </Router>
   );

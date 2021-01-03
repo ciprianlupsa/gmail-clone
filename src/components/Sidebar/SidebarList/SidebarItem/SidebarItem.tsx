@@ -1,6 +1,7 @@
 import { Box, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import React from 'react';
-import useColorTransform from '../../../../hooks/style-hooks/useColorTransform';
+import { SELECTED_COLOR } from '../../../../constants/app';
+import useColorClasses from '../../../../hooks/style-hooks/useColorClasses';
 import { SidebarListItem } from './SidebarItem.model';
 import useSidebarItemStyle from './SidebarItemStyle';
 
@@ -14,14 +15,19 @@ const SidebarItem: React.FC<SidebarListItem> = ({
   selected,
 }) => {
   const classes = useSidebarItemStyle();
-  const transformColors = useColorTransform('primary');
-  const listItemClasses = selected
-    ? `${classes.itemActive} ${transformColors.active}`
-    : `${transformColors.hover}`;
+  const selectedColor = SELECTED_COLOR;
+  const { active, hover } = useColorClasses(selectedColor);
+
+  const SidebarItemClasses = [
+    selected ? `${classes.itemActive} ${active}` : `${hover}`,
+    classes.item,
+  ].join(' ');
 
   return (
-    <ListItem button className={`${classes.item} ${listItemClasses}`}>
-      <ListItemIcon className={`${classes.itemIcon}`}>{Icon}</ListItemIcon>
+    <ListItem button className={`${SidebarItemClasses}`}>
+      <ListItemIcon className={`${classes.itemIcon}`}>
+        <Icon color={selected ? selectedColor : 'inherit'} />
+      </ListItemIcon>
       <ListItemText
         primary={
           <Box

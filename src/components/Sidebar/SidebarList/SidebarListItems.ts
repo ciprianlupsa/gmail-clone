@@ -14,18 +14,18 @@ import ItterableList from '../../../classes/ItterableList';
 const SidebarListItems: Array<ItterableList<SidebarListItem>> = [
   new ItterableList<SidebarListItem>(
     [
-      new SidebarListItem('Inbox', <InboxIcon />, undefined, 15, true),
-      new SidebarListItem('Starred', <StarBorder />),
-      new SidebarListItem('Snoozed', <QueryBuilderIcon />),
-      new SidebarListItem('Sent', <SendIcon />),
-      new SidebarListItem('Drafts', <InsertDriveFileIcon />, undefined, 1),
+      new SidebarListItem('Inbox', InboxIcon, undefined, 15, true),
+      new SidebarListItem('Starred', StarBorder),
+      new SidebarListItem('Snoozed', QueryBuilderIcon),
+      new SidebarListItem('Sent', SendIcon),
+      new SidebarListItem('Drafts', InsertDriveFileIcon, undefined, 1),
     ],
     null
   ),
   new ItterableList<SidebarListItem>(
     [
-      new SidebarListItem('New meeting', <VideocamIcon />),
-      new SidebarListItem('Join meeting', <KeyboardIcon />),
+      new SidebarListItem('New meeting', VideocamIcon),
+      new SidebarListItem('Join meeting', KeyboardIcon),
     ],
     'Meet'
   ),

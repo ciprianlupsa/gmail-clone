@@ -6,8 +6,6 @@ class ItterableList<T> extends UniqueObject {
     public heading: string | null = null
   ) {
     super();
-
-    console.log('THIS LIST', this);
   }
 }
 
