@@ -16,10 +16,6 @@ interface Colors {
   backgroundColor?: string;
 }
 
-interface ConstructedClasses {
-  []
-}
-
 const turnColors = (
   colorOptions: SimplePaletteColorOptions | Color
 ): Colors => {
@@ -49,7 +45,7 @@ const constructClasses = (colorName: AcceptedColors, colors: Colors) => {
   };
 };
 
-const useColorTransform = (colorName: AcceptedColors): =>
+const useColorTransform = (colorName: AcceptedColors) =>
   makeStyles((theme: Theme) => {
     const colorOptions: SimplePaletteColorOptions | Color =
       theme.palette[colorName];
