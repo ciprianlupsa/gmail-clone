@@ -11,13 +11,20 @@ import SidebarList from './SidebarList/SidebarList';
 import useSidebarStyle from './SidebarStyle';
 import ItterableList from '../../classes/ItterableList';
 import { SidebarListItem } from './SidebarList/SidebarItem/SidebarItem.model';
+import { useDispatch } from 'react-redux';
+import { manageDraftModalOpen } from '../../app/slices/DraftEmailSlice';
 
 const Sidebar: React.FC = () => {
   const classes = useSidebarStyle();
+  const dispatch = useDispatch();
 
   return (
     <section>
-      <Button className={classes.compose} size="large">
+      <Button
+        onClick={() => dispatch(manageDraftModalOpen(true))}
+        className={classes.compose}
+        size="large"
+      >
         <Avatar
           className={classes.composeAvatar}
           src="https://www.gstatic.com/images/icons/material/colored_icons/1x/create_32dp.png"

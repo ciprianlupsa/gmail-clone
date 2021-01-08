@@ -12,13 +12,6 @@ const EmailBody: React.FC = () => {
       <Box display="flex" alignItems="center" className={classes.mailHeader}>
         <h2 className={classes.mailHeadingHeader}>Subject</h2>
         <LabelImportant className={classes.mailImportant} />
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
-          repellendus dolorem hic praesentium ex eos id consequatur amet iure
-          rerum, dolores unde fuga? Animi quisquam, perspiciatis expedita porro
-          doloribus earum!
-        </p>
         <p>Time</p>
       </Box>
 

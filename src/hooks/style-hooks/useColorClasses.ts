@@ -5,22 +5,7 @@ import { SimplePaletteColorOptions } from '@material-ui/core/styles/createPalett
 import { CSSProperties } from '@material-ui/core/styles/withStyles';
 
 interface ConstructedClassesReturnType {
-  hover: {
-    '&:hover': CSSProperties;
-  };
-  hoverBgLight: {
-    '&:hover': CSSProperties;
-  };
-  hoverBgMain: {
-    '&:hover': CSSProperties;
-  };
-  active: CSSProperties;
-  colorMain: CSSProperties;
-  colorLight: CSSProperties;
-  bgMain: CSSProperties;
-  bgLight: CSSProperties;
-  borderColorMain: CSSProperties;
-  borderColorLight: CSSProperties;
+  [name: string]: CSSProperties;
 }
 
 interface ColorMap {

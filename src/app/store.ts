@@ -4,11 +4,14 @@ import {
   Action,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+
+import draftEmailReducer from './slices/DraftEmailSlice';
+import emailListSlice from './slices/EmailListSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    draftEmail: draftEmailReducer,
+    emailList: emailListSlice,
   },
   middleware: [...getDefaultMiddleware()],
 });
