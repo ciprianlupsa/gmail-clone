@@ -1,16 +1,18 @@
+// export type FirestoreTimestamp = import("firebase").firestore.Timestamp;
+
 export interface Email {
   from: string;
   to: string;
-  ccTo?: string;
-  bccTo?: string;
+  ccTo?: string[] | null;
+  bccTo?: string[] | null;
 
   subject: string;
   body: string;
-  timestamp: string;
+  timestamp: any;
   thread: Email[];
 
-  read?: string;
-  scheduledToSendOn?: string;
+  read?: boolean;
+  scheduledToSendOn?: string | null;
   attachments?: string[] | null;
 
   starred?: boolean;
@@ -19,5 +21,5 @@ export interface Email {
   important?: boolean;
   consideredSpam?: boolean;
   deleted?: boolean;
-  category?: 'primary' | 'updates' | 'forums' | 'promotions';
+  category?: "primary" | "updates" | "forums" | "promotions";
 }

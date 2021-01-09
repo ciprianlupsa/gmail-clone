@@ -1,10 +1,18 @@
-import { Box } from '@material-ui/core';
-import React from 'react';
-import EmailListCategories from './EmailListCategories/EmailListCategories';
-import EmailListSettings from './EmailListSettings/EmailListSettings';
-import EmailRow from './EmailRow/EmailRow';
+import { Box } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getAllEmails } from "../../app/slices/EmailListSlice";
+import EmailListCategories from "./EmailListCategories/EmailListCategories";
+import EmailListSettings from "./EmailListSettings/EmailListSettings";
+import EmailRow from "./EmailRow/EmailRow";
 
 const EmailList: React.FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllEmails("inbox"));
+  }, [dispatch]);
+
   return (
     <Box>
       <EmailListSettings />

@@ -3,15 +3,17 @@ import {
   ThunkAction,
   Action,
   getDefaultMiddleware,
-} from '@reduxjs/toolkit';
+} from "@reduxjs/toolkit";
 
-import draftEmailReducer from './slices/DraftEmailSlice';
-import emailListSlice from './slices/EmailListSlice';
+// import { counterSlice } from "../features/counter/counterSlice";
+import draftEmailReducer from "./slices/DraftEmailSlice";
+import emailListSliceReducer from "./slices/EmailListSlice";
 
 export const store = configureStore({
   reducer: {
     draftEmail: draftEmailReducer,
-    emailList: emailListSlice,
+    emailList: emailListSliceReducer,
+    // counter: counterSlice,
   },
   middleware: [...getDefaultMiddleware()],
 });
