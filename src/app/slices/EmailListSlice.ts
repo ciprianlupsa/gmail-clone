@@ -1,15 +1,15 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import thunkMetaInitialization from './../thunkMetaInitialization';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
+import thunkMetaInitialization from "./../thunkMetaInitialization";
 
-import { ThunkMeta } from './../../types/thunk-meta';
-import { NewEmailFormValues } from './../../types/new-email';
-import { Email } from './../../types/email';
+import { ThunkMeta } from "./../../types/thunk-meta";
+import { NewEmailFormValues } from "./../../types/new-email";
+import { Email } from "./../../types/email";
 
-import firebase from 'firebase';
-import { db } from '../../config/firebase';
+import firebase from "firebase";
+import { db } from "../../config/firebase";
 
-type ActiveListType = 'inbox';
+type ActiveListType = "inbox";
 interface EmailListState {
   activeListType: ActiveListType; // add all the others
   inListEmails: Email[];
@@ -18,15 +18,21 @@ interface EmailListState {
 }
 
 const initialState: EmailListState = {
-  activeListType: 'inbox',
+  activeListType: "inbox",
   inListEmails: [],
   allEmails: [],
   getAllEmailsStatus: { ...thunkMetaInitialization() },
 };
 
 export const getAllEmails = createAsyncThunk(
-  'emailDraft/allEmails',
+  "emailDraft/allEmails",
   async (listType: ActiveListType, { getState, dispatch }) => {
+    const snapshot: any = await db.collection("emails").get();
+
+    const emails: Email[] = snapshot.docs.map((doc: any) => doc.data());
+    console.log("RESPONSE FOR GET EMAILS", emails);
+
+    return emails;
     // const newEmail = {
     //   ...emailFormValues,
     //   timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -38,16 +44,9 @@ export const getAllEmails = createAsyncThunk(
 );
 
 export const draftEmail = createSlice({
-  name: 'draftEmail',
+  name: "draftEmail",
   initialState,
-  reducers: {
-    manageDraftModalOpen: (state, action: PayloadAction<boolean>) => {
-      state.modalOpen = action.payload;
-    },
-    cacheDraft: (state, action: PayloadAction<NewEmailFormValues>) => {
-      state.cachedDraft = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     // builder.addCase(sendDraftEmail.pending, (state, action) => {
     //   state.sendMailStatus.loading = true;
@@ -63,12 +62,12 @@ export const draftEmail = createSlice({
   },
 });
 
-export const { manageDraftModalOpen, cacheDraft } = draftEmail.actions;
+// export const { manageDraftModalOpen, cacheDraft } = draftEmail.actions;
 
-export const selectModalOpen = (state: RootState) => state.draftEmail.modalOpen;
-export const selectCachedDraft = (state: RootState) =>
-  state.draftEmail.cachedDraft;
-export const selectSendMailStatus = (state: RootState) =>
-  state.draftEmail.sendMailStatus;
+// export const selectModalOpen = (state: RootState) => state.draftEmail.modalOpen;
+// export const selectCachedDraft = (state: RootState) =>
+//   state.draftEmail.cachedDraft;
+// export const selectSendMailStatus = (state: RootState) =>
+//   state.draftEmail.sendMailStatus;
 
 export default draftEmail.reducer;

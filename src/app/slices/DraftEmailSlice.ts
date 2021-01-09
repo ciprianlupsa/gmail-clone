@@ -1,13 +1,13 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import thunkMetaInitialization from './../thunkMetaInitialization';
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
+import thunkMetaInitialization from "./../thunkMetaInitialization";
 
-import { ThunkMeta } from './../../types/thunk-meta';
-import { NewEmailFormValues } from './../../types/new-email';
-import { Email } from './../../types/email';
+import { ThunkMeta } from "./../../types/thunk-meta";
+import { NewEmailFormValues } from "./../../types/new-email";
+import { Email } from "./../../types/email";
 
-import firebase from 'firebase';
-import { db } from '../../config/firebase';
+import firebase from "firebase";
+import { db } from "../../config/firebase";
 
 interface DraftEmailState {
   modalOpen: boolean;
@@ -16,9 +16,9 @@ interface DraftEmailState {
 }
 
 const draftInitialState = {
-  to: '',
-  subject: '',
-  body: '',
+  to: "",
+  subject: "",
+  body: "",
 };
 
 const initialState: DraftEmailState = {
@@ -32,21 +32,38 @@ const initialState: DraftEmailState = {
 };
 
 export const sendDraftEmail = createAsyncThunk(
-  'emailDraft/saveEmailStatus',
+  "emailDraft/saveEmailStatus",
   async (emailFormValues: NewEmailFormValues, { getState, dispatch }) => {
-    const newEmail = {
+    const newEmail: Email = {
       ...emailFormValues,
+      from: "cipsdnbfake@gmail.com",
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      ccTo: null,
+      bccTo: null,
+      thread: [],
+
+      read: false,
+      scheduledToSendOn: null,
+      attachments: null,
+
+      starred: false,
+      snoozed: false,
+      draft: false, // !!
+      important: false,
+      consideredSpam: false,
+      deleted: false,
+      category: "primary", // !!
     };
 
-    const response: any = await db.collection('emails').add(newEmail);
+    const response: any = await db.collection("emails").add(newEmail);
     // Action - push to email list slice
+    console.log("response", response.data);
     return response.data;
   }
 );
 
 export const draftEmail = createSlice({
-  name: 'draftEmail',
+  name: "draftEmail",
   initialState,
   reducers: {
     manageDraftModalOpen: (state, action: PayloadAction<boolean>) => {
