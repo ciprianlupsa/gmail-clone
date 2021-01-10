@@ -13,13 +13,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EmailIcon from '@material-ui/icons/Email';
 import { Box, Divider } from '@material-ui/core';
 import { useHistory } from 'react-router';
+
 const EmailTools = () => {
   const history = useHistory();
 
   return (
     <Box display="flex" alignItems="center" justifyContent="space-between">
       <IconButtonTooltip
-        action={() => history.goBack()}
+        action={($e) => history.goBack()}
         size="small"
         tooltip="Go back"
       >

@@ -89,7 +89,7 @@ const NewEmail = () => {
                   <IconButtonTooltip
                     tooltip="Close"
                     size="small"
-                    action={() => handleClose(values)}
+                    action={($e) => handleClose(values)}
                   >
                     <CloseIcon></CloseIcon>
                   </IconButtonTooltip>

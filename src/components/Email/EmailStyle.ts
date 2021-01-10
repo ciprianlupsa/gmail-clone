@@ -12,7 +12,9 @@ const useEmailStyle = makeStyles((theme: Theme) => ({
     fontWeight: 'normal',
   },
   mailImportant: {},
-  mailBody: {},
+  replyButton: {
+    marginRight: theme.spacing(2),
+  },
 }));
 
 export default useEmailStyle;

@@ -3,22 +3,24 @@ import {
   ThunkAction,
   Action,
   getDefaultMiddleware,
-} from "@reduxjs/toolkit";
+  combineReducers,
+} from '@reduxjs/toolkit';
 
 // import { counterSlice } from "../features/counter/counterSlice";
-import draftEmailReducer from "./slices/DraftEmailSlice";
-import emailListSliceReducer from "./slices/EmailListSlice";
+import draftEmailReducer from './slices/DraftEmailSlice';
+import emailListSliceReducer from './slices/EmailListSlice';
+
+const rootReducer = combineReducers({
+  draftEmail: draftEmailReducer,
+  emailList: emailListSliceReducer,
+});
 
 export const store = configureStore({
-  reducer: {
-    draftEmail: draftEmailReducer,
-    emailList: emailListSliceReducer,
-    // counter: counterSlice,
-  },
+  reducer: rootReducer,
   middleware: [...getDefaultMiddleware()],
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof rootReducer>;
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
