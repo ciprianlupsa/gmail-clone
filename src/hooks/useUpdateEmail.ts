@@ -8,7 +8,10 @@ export default function (dispatch: any) {
     newValue: Partial<Email>,
     id: string | undefined
   ): void {
+    if (!id) return;
+
     $event.stopPropagation();
+    console.log(newValue, id);
     dispatch(updateEmail(newValue, id as string));
   };
 }

@@ -5,6 +5,7 @@ import { createBrowserHistory as history } from 'history';
 import Home from './pages/Home';
 import ViewEmail from './pages/ViewEmail';
 import NewEmail from './components/NewEmail/NewEmail';
+import GlobalFeedback from './components/GlobalFeedback/GlobalFeedback';
 
 const App: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: React.FC = () => {
       </Router>
 
       <NewEmail />
+      <GlobalFeedback />
     </>
   );
 };

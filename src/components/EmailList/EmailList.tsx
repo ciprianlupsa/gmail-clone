@@ -1,16 +1,12 @@
 import React, { useEffect } from 'react';
 
 import { Box, LinearProgress } from '@material-ui/core';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getEmails,
   selectGetEmailsStatus,
   selectEmails,
-  selectUpdateError,
-  setUpdateError,
 } from '../../app/slices/EmailListSlice';
 
 import { Email } from '../../types/email';
@@ -21,7 +17,6 @@ import EmailListSettings from './EmailListSettings/EmailListSettings';
 
 const EmailList: React.FC = () => {
   const emails = useSelector(selectEmails);
-  const updateError = useSelector(selectUpdateError);
   const { loading, error } = useSelector(selectGetEmailsStatus);
 
   const dispatch = useDispatch();
@@ -40,21 +35,6 @@ const EmailList: React.FC = () => {
           <LinearProgress />
         </Box>
       )}
-
-      <Snackbar
-        open={!!updateError}
-        autoHideDuration={6000}
-        onClose={() => dispatch(setUpdateError(null))}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={() => dispatch(setUpdateError(null))}
-          severity="error"
-        >
-          {updateError}
-        </MuiAlert>
-      </Snackbar>
 
       {emails.length > 0 &&
         emails.map(

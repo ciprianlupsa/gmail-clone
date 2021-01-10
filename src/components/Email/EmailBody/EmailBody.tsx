@@ -6,15 +6,19 @@ import ReplyIcon from '@material-ui/icons/Reply';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { StarBorderOutlined } from '@material-ui/icons';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectViewEmail } from '../../../app/slices/EmailListSlice';
 
 import IconButtonTooltip from '../../IconButtonTooltip/IconButtonTooltip';
+import useUpdateEmail from '../../../hooks/useUpdateEmail';
+import useColorClasses from '../../../hooks/style-hooks/useColorClasses';
+import { Email } from '../../../types/email';
 
 const EmailBody: React.FC = () => {
-  const email = useSelector(selectViewEmail);
-
-  if (!email) return null;
+  const email = useSelector(selectViewEmail) as Email;
+  const dispatch = useDispatch();
+  const updateEmailByClick = useUpdateEmail(dispatch);
+  const warning = useColorClasses('warning');
 
   return (
     <Box component="section">
@@ -64,10 +68,17 @@ const EmailBody: React.FC = () => {
             {email.timestamp}
           </Box>
 
-          <IconButtonTooltip size="small" tooltip="Not starred">
-            <StarBorderOutlined />
+          <IconButtonTooltip
+            size="small"
+            tooltip={email.starred ? 'Starred' : 'Not starred'}
+            action={($e) =>
+              updateEmailByClick($e, { starred: !email.starred }, email.id)
+            }
+          >
+            <StarBorderOutlined
+              className={email.starred ? warning.colorMain : ''}
+            />
           </IconButtonTooltip>
-
           <IconButtonTooltip size="small" tooltip="Reply">
             <ReplyIcon />
           </IconButtonTooltip>

@@ -7,7 +7,6 @@ import { emailsRef } from './../../firebase/firebaseRefs';
 import { ThunkMeta } from './../../types/thunk-meta';
 import { Email } from './../../types/email';
 
-type ActiveListType = 'inbox';
 interface EmailListState {
   activeListType: ActiveListType; // add all the others
   emails: Email[];

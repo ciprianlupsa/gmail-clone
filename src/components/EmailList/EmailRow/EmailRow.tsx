@@ -33,15 +33,6 @@ const EmailRow: React.FC<Partial<Email>> = ({
 
   const updateEmailByClick = useUpdateEmail(dispatch);
 
-  // const updateEmailByClick = (
-  //   $event: SyntheticEvent,
-  //   newValue: Partial<Email>
-  // ): void => {
-  //   $event.stopPropagation();
-
-  //   dispatch(updateEmail(newValue, id));
-  // };
-
   const handleSelected = ($event: React.ChangeEvent<HTMLInputElement>) => {
     $event.stopPropagation();
     const value = $event.target.checked;
