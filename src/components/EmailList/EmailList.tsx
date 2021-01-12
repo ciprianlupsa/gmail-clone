@@ -7,61 +7,58 @@ import {
   getEmails,
   selectGetEmailsStatus,
   selectEmails,
+  selectActiveListType,
 } from '../../app/slices/EmailListSlice';
 
 import { Email } from '../../types/email';
 import EmailRow from './EmailRow/EmailRow';
 
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+
 import EmailListCategories from './EmailListCategories/EmailListCategories';
 import EmailListSettings from './EmailListSettings/EmailListSettings';
+import useQueryParams from '../../hooks/useQueryParams';
+import memoize from 'memoize-one';
 
 const EmailList: React.FC = () => {
   const emails = useSelector(selectEmails);
-  const { loading, error } = useSelector(selectGetEmailsStatus);
+  const activeListType = useSelector(selectActiveListType);
+  const { loading } = useSelector(selectGetEmailsStatus);
+  const queryParams = useQueryParams();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getEmails('inbox'));
-  }, [dispatch]);
+    if (queryParams.list) dispatch(getEmails(queryParams.list));
+    else dispatch(getEmails(activeListType));
+  }, [queryParams]);
 
   return (
-    <Box>
-      <EmailListSettings />
-      <EmailListCategories />
-
+    <>
+      <Box
+        position="sticky"
+        width="100%"
+        top={0}
+        zIndex="100"
+        style={{ backgroundColor: '#fafafa' }}
+      >
+        <EmailListSettings />
+      </Box>
       {loading && (
-        <Box mt={3}>
+        <Box>
           <LinearProgress />
         </Box>
       )}
-
-      {emails.length > 0 &&
-        emails.map(
-          ({
-            id,
-            from,
-            subject,
-            body,
-            timestamp,
-            starred,
-            important,
-            selected,
-          }: Email) => (
-            <EmailRow
-              key={id}
-              id={id}
-              from={from}
-              subject={subject}
-              body={body}
-              timestamp={timestamp}
-              starred={starred}
-              important={important}
-              selected={selected}
-            />
-          )
-        )}
-    </Box>
+      {activeListType === 'Inbox' && <EmailListCategories />}
+      {/* <AutoSizer>
+        {(sizerProps: { height: number; width: number }) => ( */}
+      <List height={800} width={'100%'} itemCount={emails.length} itemSize={50}>
+        {EmailRow}
+      </List>
+      {/* )}
+      </AutoSizer> */}
+    </>
   );
 };
 

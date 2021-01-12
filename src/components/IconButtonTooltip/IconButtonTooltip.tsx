@@ -1,4 +1,4 @@
-import React, { ReactElement, SyntheticEvent } from 'react';
+import React, { ReactElement, SyntheticEvent, memo } from 'react';
 
 import { Box, IconButton, Tooltip } from '@material-ui/core';
 
@@ -30,10 +30,10 @@ const IconButtonTooltip: React.FC<IconButtonTooltipProps> = ({
         onClick={action}
         size={iconButtonSize}
       >
-        {React.cloneElement(children, { size })}
+        {children}
       </IconButton>
     </Tooltip>
   );
 };
 
-export default IconButtonTooltip;
+export default React.memo(IconButtonTooltip);

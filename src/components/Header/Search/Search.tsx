@@ -6,8 +6,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ClearIcon from '@material-ui/icons/Clear';
 
 const Search: React.FC = () => {
-  const [searchValue, setSearchValue] = useState<string>('abracadabra');
-  console.log('Rendering search ');
+  const [searchValue, setSearchValue] = useState<string>('');
   return (
     <Box
       display="flex"

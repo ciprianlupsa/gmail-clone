@@ -4,9 +4,9 @@ import EmailList from '../components/EmailList/EmailList';
 
 const Dashboard: React.FC = () => {
   return (
-    <Box>
+    <>
       <EmailList />
-    </Box>
+    </>
   );
 };
 

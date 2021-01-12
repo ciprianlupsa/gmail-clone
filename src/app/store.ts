@@ -9,10 +9,12 @@ import {
 // import { counterSlice } from "../features/counter/counterSlice";
 import draftEmailReducer from './slices/DraftEmailSlice';
 import emailListSliceReducer from './slices/EmailListSlice';
+import selectedEmailsReducer from './slices/SelectedEmails';
 
 const rootReducer = combineReducers({
   draftEmail: draftEmailReducer,
   emailList: emailListSliceReducer,
+  selectedEmails: selectedEmailsReducer,
 });
 
 export const store = configureStore({

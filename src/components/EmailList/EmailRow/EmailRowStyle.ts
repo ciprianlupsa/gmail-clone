@@ -17,7 +17,7 @@ const useEmailRowStyle = makeStyles((theme: Theme) => ({
     },
   },
   subject: {
-    width: '50vw',
+    width: '60vw',
     fontSize: '14px',
     ...columnCommon(theme),
   },

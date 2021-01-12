@@ -21,7 +21,7 @@ const MainLayout = <P extends {}>(
             <Sidebar />
           </Grid>
           <Grid item xs={10}>
-            <Box component="section" className={classes.layoutPage}>
+            <Box p={2} component="section" className={classes.layoutPage}>
               <Component {...(props as P)} />
             </Box>
           </Grid>

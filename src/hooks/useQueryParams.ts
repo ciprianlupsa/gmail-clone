@@ -19,7 +19,6 @@ export default function (): Params {
   // If the location changes, make sure to return the query params on every update
   useEffect(() => {
     setParams(getParams(location));
-    console.log('Params set as', params);
   }, [location]);
 
   return params;

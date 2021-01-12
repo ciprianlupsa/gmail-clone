@@ -10,8 +10,8 @@ const useEmailStyle = makeStyles((theme: Theme) => ({
   mailHeadingHeader: {
     fontSize: '1.375rem',
     fontWeight: 'normal',
+    marginRight: theme.spacing(1),
   },
-  mailImportant: {},
   replyButton: {
     marginRight: theme.spacing(2),
   },

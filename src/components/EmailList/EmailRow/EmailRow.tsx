@@ -1,5 +1,5 @@
-import React, { SyntheticEvent } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { Box, Checkbox } from '@material-ui/core';
@@ -8,22 +8,31 @@ import { LabelImportantOutlined, StarBorderOutlined } from '@material-ui/icons';
 import useColorClasses from '../../../hooks/style-hooks/useColorClasses';
 import useEmailRowStyle from './EmailRowStyle';
 
-import { Email } from '../../../types/email';
 import IconButtonTooltip from '../../IconButtonTooltip/IconButtonTooltip';
-import { updateEmail } from '../../../app/slices/EmailListSlice';
+import {
+  selectEmailByIndex,
+  updateEmail,
+} from '../../../app/slices/EmailListSlice';
 import useUpdateEmail from '../../../hooks/useUpdateEmail';
+import { areEqual, ListChildComponentProps } from 'react-window';
+import memoizeOne from 'memoize-one';
+import {
+  selectEmailSelected,
+  toggleSelectedValue,
+} from '../../../app/slices/SelectedEmails';
 
-const EmailRow: React.FC<Partial<Email>> = ({
-  id,
-  from,
-  subject,
-  body,
-  timestamp,
-  starred,
-  important,
-  selected,
-}) => {
-  const [checked, setChecked] = React.useState(selected);
+const EmailRow: React.FC<ListChildComponentProps> = ({ index, style }) => {
+  const {
+    id,
+    from,
+    subject,
+    body,
+    timestamp,
+    starred,
+    important,
+    read,
+  } = useSelector(selectEmailByIndex(index));
+  const selected = useSelector(selectEmailSelected(id));
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -36,11 +45,14 @@ const EmailRow: React.FC<Partial<Email>> = ({
   const handleSelected = ($event: React.ChangeEvent<HTMLInputElement>) => {
     $event.stopPropagation();
     const value = $event.target.checked;
-    dispatch(updateEmail({ selected: value }, id));
+    dispatch(toggleSelectedValue({ id, value }));
   };
+
+  const isReadWeight = read ? 'fontWeightLight' : 'fontWeightBold';
 
   return (
     <Box
+      style={style}
       onClick={() =>
         history.push({
           pathname: '/mail',
@@ -56,9 +68,9 @@ const EmailRow: React.FC<Partial<Email>> = ({
     >
       <Box display="flex">
         <Checkbox
-          checked={checked}
+          checked={selected}
           onChange={handleSelected}
-          inputProps={{ 'aria-label': 'Select email' }}
+          // inputProps={{ 'aria-label': 'Select email' }}
         />
 
         <IconButtonTooltip
@@ -71,7 +83,7 @@ const EmailRow: React.FC<Partial<Email>> = ({
         <IconButtonTooltip
           size="small"
           tooltip={
-            important ? 'Click to teach Gmail that this email is important' : ''
+            important ? '' : 'Click to teach Gmail that this email is important'
           }
           action={($e) => updateEmailByClick($e, { important: !important }, id)}
         >
@@ -82,14 +94,20 @@ const EmailRow: React.FC<Partial<Email>> = ({
       </Box>
 
       <Box pr={1} display="flex" alignItems="center" justifyContent="center">
-        <h4 className={classes.title}>{from}</h4>
+        <Box fontWeight={isReadWeight} component="h4" className={classes.title}>
+          {from}
+        </Box>
       </Box>
 
       <Box display="flex" alignItems="center" flex={0.6}>
-        <h4 className={classes.subject}>
+        <Box
+          fontWeight={isReadWeight}
+          component="h4"
+          className={classes.subject}
+        >
           {subject}
           <span className={classes.description}> - {body}</span>
-        </h4>
+        </Box>
       </Box>
 
       <Box flex={0.4} className={classes.time}>

@@ -1,15 +1,22 @@
 import { RootState, AppThunk } from './../store';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  SerializedError,
+} from '@reduxjs/toolkit';
 import thunkMetaInitialization from './../thunkMetaInitialization';
 
 import { emailsRef } from './../../firebase/firebaseRefs';
 
 import { ThunkMeta } from './../../types/thunk-meta';
 import { Email } from './../../types/email';
-
-type ActiveListType = 'inbox';
+import { SIdebarItemType } from './../../types/sidebar';
+import getEmailsQueryBuilder from './EmailListSlice/getEmailsQueryBuilder';
+import parseTimestamp from '../../utils/parseTimestamp';
+import { initializeSelectedEmailsMap } from './SelectedEmails';
 interface EmailListState {
-  activeListType: ActiveListType; // add all the others
+  activeListType: SIdebarItemType | string;
   emails: Email[];
   getEmailsStatus: ThunkMeta;
   viewEmailIndex: number | null;
@@ -19,7 +26,7 @@ interface EmailListState {
 }
 
 const initialState: EmailListState = {
-  activeListType: 'inbox',
+  activeListType: 'Inbox',
   emails: [],
   getEmailsStatus: { ...thunkMetaInitialization() },
   viewEmailIndex: null,
@@ -30,39 +37,38 @@ const initialState: EmailListState = {
 
 export const getEmails = createAsyncThunk(
   'emailList/allEmails',
-  async (listType: ActiveListType, { getState, dispatch }) => {
-    const snapshot: any = await emailsRef
-      .orderBy('timestamp', 'desc')
-      .limit(200)
-      .get();
+  async (listType: SIdebarItemType | string, { dispatch, rejectWithValue }) => {
+    try {
+      const snapshot: any = await getEmailsQueryBuilder(listType);
 
-    const mappedEmails: Email[] = snapshot.docs.map(
-      (doc: any, index: number): Email => {
-        const data = doc.data();
-        console.log('DATA', data);
-        const readableTimestamp = data.timestamp
-          .toDate()
-          .toLocaleString('en-GB', {
-            timeZone: 'UTC',
-          });
+      const mappedEmails: Email[] = snapshot.docs.map(
+        (doc: any, index: number): Email => {
+          const data = doc.data();
+          const readableTimestamp = parseTimestamp(data.timestamp);
 
-        return {
-          ...data,
-          id: doc.id,
-          timestamp: readableTimestamp,
-          selected: false,
-        };
-      }
-    );
+          return {
+            ...data,
+            id: doc.id,
+            timestamp: readableTimestamp,
+            selected: false,
+          };
+        }
+      );
 
-    return mappedEmails;
+      dispatch(
+        initializeSelectedEmailsMap(mappedEmails.map((email) => email.id))
+      );
+      return mappedEmails;
+    } catch (err) {
+      console.log(err);
+      return rejectWithValue(err.message);
+    }
   },
   {
-    condition: (listType: ActiveListType, { getState, extra }) => {
+    condition: (listType: SIdebarItemType | string, { getState, extra }) => {
       const { emailList } = getState() as RootState;
 
-      // No need to load all the emails if they already are here
-      if (emailList.emails.length > 0) return false;
+      // if (listType === emailList.activeListType) return false;
 
       return true;
     },
@@ -95,6 +101,11 @@ export const emailList = createSlice({
           }
         });
     },
+    addEmail(state, { payload }: PayloadAction<Email>) {
+      if (state.activeListType === 'Inbox' || state.activeListType === 'Sent') {
+        state.emails.unshift(payload);
+      }
+    },
     setViewEmail(state, { payload }: PayloadAction<string>) {
       const emailIndex = state.emails.findIndex(
         (email) => email.id === payload
@@ -109,15 +120,29 @@ export const emailList = createSlice({
       state.viewEmailIndex = emailIndex;
       state.viewEmail = state.emails[emailIndex];
     },
+    setActiveListType(
+      state,
+      { payload }: PayloadAction<SIdebarItemType | string>
+    ) {
+      state.activeListType = payload;
+    },
     setUpdateError(state, { payload }: PayloadAction<string | null>) {
       state.updateError = payload;
     },
     setUpdateSuccess(state, { payload }: PayloadAction<boolean>) {
       state.updateSuccess = payload;
     },
+    resetActiveMail(state) {
+      state.viewEmail = null;
+      state.viewEmailIndex = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getEmails.pending, (state, action) => {
+      state.emails = [];
+      state.viewEmail = null;
+      state.viewEmailIndex = null;
+
       state.getEmailsStatus.loading = true;
     });
     builder.addCase(getEmails.fulfilled, (state, action) => {
@@ -127,6 +152,7 @@ export const emailList = createSlice({
     });
     builder.addCase(getEmails.rejected, (state, action) => {
       state.getEmailsStatus.loading = false;
+      state.getEmailsStatus.error = 'Cannot get emails at this moment.';
     });
   },
 });
@@ -134,13 +160,13 @@ export const emailList = createSlice({
 export const updateEmail = (
   toUpdate: Partial<Email>,
   docId: string | undefined
-): AppThunk => async (dispatch) => {
+): AppThunk => async (dispatch, getState) => {
   if (!docId) return;
 
   const { setEmail, setUpdateError, setUpdateSuccess } = emailList.actions;
 
   try {
-    const res = await emailsRef.doc(docId).update(toUpdate);
+    await emailsRef.doc(docId).update(toUpdate);
     dispatch(setEmail({ toUpdate, docId }));
     dispatch(setUpdateSuccess(true));
   } catch (err) {
@@ -152,20 +178,25 @@ export const {
   setUpdateError,
   setUpdateSuccess,
   setViewEmail,
+  setActiveListType,
+  resetActiveMail,
+  addEmail,
 } = emailList.actions;
 
+export const selectActiveListType = (state: RootState) =>
+  state.emailList.activeListType;
+
 export const selectEmails = (state: RootState) => state.emailList.emails;
+export const selectEmailByIndex = (index: number) => (state: RootState) =>
+  state.emailList.emails[index];
+export const selectViewEmail = (state: RootState) => state.emailList.viewEmail;
+
 export const selectGetEmailsStatus = (state: RootState) =>
   state.emailList.getEmailsStatus;
-export const selectViewEmail = (state: RootState) => state.emailList.viewEmail;
 
 export const selectUpdateError = (state: RootState) =>
   state.emailList.updateError;
 export const selectUpdateSuccess = (state: RootState) =>
   state.emailList.updateSuccess;
-
-// export const selectModalOpen = (state: RootState) => state.draftEmail.modalOpen;
-// export const selectCachedDraft = (state: RootState) =>
-//   state.draftEmail.cachedDraft;
 
 export default emailList.reducer;

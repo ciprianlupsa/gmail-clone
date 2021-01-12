@@ -5,8 +5,8 @@ import EmailListCategoryItem from './EmailListCategory/EmailListCategoryItem.mod
 
 const CategoryList = new ItterableList<EmailListCategoryItem>([
   new EmailListCategoryItem('Primary', Inbox, SELECTED_COLOR, true),
-  new EmailListCategoryItem('Social', People, 'info', true),
-  new EmailListCategoryItem('Promotions', LocalOffer, 'success', true),
+  new EmailListCategoryItem('Social', People, 'info', false),
+  new EmailListCategoryItem('Promotions', LocalOffer, 'success', false),
 ]);
 
 export default CategoryList;

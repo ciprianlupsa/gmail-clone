@@ -5,7 +5,8 @@ const useMainLayoutStyle = makeStyles((theme: Theme) => ({
     minHeight: 'calc(100vh - 65px)', //64px = header height + 1px divider, make this dynamic
   },
   layoutPage: {
-    padding: theme.spacing(2),
+    height: `calc(100vh - 65px - ${theme.spacing(2)}px)`,
+    overflow: 'hidden',
   },
 }));
 

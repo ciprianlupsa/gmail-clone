@@ -4,14 +4,14 @@ import { updateEmail } from '../app/slices/EmailListSlice';
 
 export default function (dispatch: any) {
   return function (
-    $event: SyntheticEvent,
+    $event: SyntheticEvent | null,
     newValue: Partial<Email>,
     id: string | undefined
   ): void {
     if (!id) return;
+    if ($event) $event.stopPropagation();
 
-    $event.stopPropagation();
-    console.log(newValue, id);
+    console.log('Updated', newValue, id);
     dispatch(updateEmail(newValue, id as string));
   };
 }

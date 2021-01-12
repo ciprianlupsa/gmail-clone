@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
+  selectGetEmailsStatus,
   selectUpdateError,
   selectUpdateSuccess,
   setUpdateError,
@@ -13,6 +14,7 @@ const GlobalFeedback = () => {
   const dispatch = useDispatch();
   const emailUpdateError = useSelector(selectUpdateError);
   const emailUpdateSuccess = useSelector(selectUpdateSuccess);
+  const { error: getAllEmailsError } = useSelector(selectGetEmailsStatus);
 
   return (
     <>
@@ -27,6 +29,12 @@ const GlobalFeedback = () => {
         closeAction={() => dispatch(setUpdateSuccess(false))}
         alertMessage="Email updated!"
         alertType="success"
+      />
+      <AlertSnackbar
+        open={!!getAllEmailsError}
+        closeAction={() => {}}
+        alertMessage={getAllEmailsError}
+        alertType="error"
       />
     </>
   );

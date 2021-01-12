@@ -4,9 +4,12 @@ import thunkMetaInitialization from './../thunkMetaInitialization';
 
 import { ThunkMeta } from './../../types/thunk-meta';
 import { NewEmailFormValues } from './../../types/new-email';
+import { Email } from './../../types/email';
 
 import firebase from 'firebase';
 import { emailsRef } from './../../firebase/firebaseRefs';
+import { addEmail } from './EmailListSlice';
+import parseTimestamp from '../../utils/parseTimestamp';
 
 interface DraftEmailState {
   modalOpen: boolean;
@@ -32,31 +35,51 @@ const initialState: DraftEmailState = {
 
 export const sendDraftEmail = createAsyncThunk(
   'emailDraft/saveEmailStatus',
-  async (emailFormValues: NewEmailFormValues, { getState, dispatch }) => {
-    const newEmail = {
-      ...emailFormValues,
-      from: 'cipsdnbfake@gmail.com',
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      ccTo: null,
-      bccTo: null,
-      thread: [],
+  async (
+    emailFormValues: NewEmailFormValues,
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    try {
+      const newEmail: Email = {
+        ...emailFormValues,
+        id: '',
+        from: 'fake@gmail.com',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        ccTo: null,
+        bccTo: null,
+        thread: [],
 
-      read: false,
-      scheduledToSendOn: null,
-      attachments: null,
+        read: false,
+        scheduledToSendOn: null,
+        attachments: null,
 
-      starred: false,
-      snoozed: false,
-      draft: false, // !!
-      important: false,
-      consideredSpam: false,
-      deleted: false,
-      category: 'primary', // !!
-    };
+        starred: false,
+        snoozed: false,
+        draft: false, // !!
+        important: false,
+        consideredSpam: false,
+        deleted: false,
+        category: 'primary', // !!
+      };
 
-    const response: any = await emailsRef.add(newEmail);
-    // Action - push to email list slice
-    return response.data;
+      const newDocRef: any = await emailsRef.add(newEmail);
+      const newDocument: any = await emailsRef.doc(newDocRef.id).get();
+
+      const data = newDocument.data();
+
+      const parsedEmail: Email = {
+        ...data,
+        id: newDocument.id,
+        timestamp: parseTimestamp(data.timestamp),
+      };
+
+      // Push the new email to the email list slice
+      dispatch(addEmail(parsedEmail));
+      return parsedEmail;
+    } catch (err) {
+      console.log('Error on saving email: ', err.message);
+      rejectWithValue(err.message);
+    }
   }
 );
 
@@ -82,6 +105,7 @@ export const draftEmail = createSlice({
     });
     builder.addCase(sendDraftEmail.rejected, (state, action) => {
       state.sendMailStatus.loading = false;
+      state.sendMailStatus.error = 'There was a problem sending this message.';
     });
   },
 });
