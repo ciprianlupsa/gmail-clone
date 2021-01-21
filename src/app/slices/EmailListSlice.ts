@@ -1,10 +1,5 @@
 import { RootState, AppThunk } from './../store';
-import {
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-  SerializedError,
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import thunkMetaInitialization from './../thunkMetaInitialization';
 
 import { emailsRef } from './../../firebase/firebaseRefs';
@@ -12,9 +7,9 @@ import { emailsRef } from './../../firebase/firebaseRefs';
 import { ThunkMeta } from './../../types/thunk-meta';
 import { Email } from './../../types/email';
 import { SIdebarItemType } from './../../types/sidebar';
-import getEmailsQueryBuilder from './EmailListSlice/getEmailsQueryBuilder';
-import parseTimestamp from '../../utils/parseTimestamp';
-import { initializeSelectedEmailsMap } from './SelectedEmails';
+
+import { getEmails } from './EmailListSlice/GetEmailsThunk';
+
 interface EmailListState {
   activeListType: SIdebarItemType | string;
   emails: Email[];
@@ -34,46 +29,6 @@ const initialState: EmailListState = {
   updateError: null,
   updateSuccess: false,
 };
-
-export const getEmails = createAsyncThunk(
-  'emailList/allEmails',
-  async (listType: SIdebarItemType | string, { dispatch, rejectWithValue }) => {
-    try {
-      const snapshot: any = await getEmailsQueryBuilder(listType);
-
-      const mappedEmails: Email[] = snapshot.docs.map(
-        (doc: any, index: number): Email => {
-          const data = doc.data();
-          const readableTimestamp = parseTimestamp(data.timestamp);
-
-          return {
-            ...data,
-            id: doc.id,
-            timestamp: readableTimestamp,
-            selected: false,
-          };
-        }
-      );
-
-      dispatch(
-        initializeSelectedEmailsMap(mappedEmails.map((email) => email.id))
-      );
-      return mappedEmails;
-    } catch (err) {
-      console.log(err);
-      return rejectWithValue(err.message);
-    }
-  },
-  {
-    condition: (listType: SIdebarItemType | string, { getState, extra }) => {
-      const { emailList } = getState() as RootState;
-
-      // if (listType === emailList.activeListType) return false;
-
-      return true;
-    },
-  }
-);
 
 export const emailList = createSlice({
   name: 'emailList',

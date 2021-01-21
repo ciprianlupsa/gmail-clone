@@ -20,8 +20,9 @@ import useUpdateEmail from '../hooks/useUpdateEmail';
 const ViewEmail: React.FC = () => {
   const location = useLocation();
   const queryParams = useQueryParams();
-  const email = useSelector(selectViewEmail);
   const dispatch = useDispatch();
+
+  const email = useSelector(selectViewEmail);
   const updateEmail = useUpdateEmail(dispatch);
 
   useEffect(() => {

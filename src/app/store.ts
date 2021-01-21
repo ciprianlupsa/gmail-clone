@@ -10,11 +10,13 @@ import {
 import draftEmailReducer from './slices/DraftEmailSlice';
 import emailListSliceReducer from './slices/EmailListSlice';
 import selectedEmailsReducer from './slices/SelectedEmails';
+import authReducer from './slices/AuthSlice';
 
 const rootReducer = combineReducers({
   draftEmail: draftEmailReducer,
   emailList: emailListSliceReducer,
   selectedEmails: selectedEmailsReducer,
+  auth: authReducer,
 });
 
 export const store = configureStore({

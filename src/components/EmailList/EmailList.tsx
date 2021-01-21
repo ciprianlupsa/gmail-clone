@@ -4,22 +4,19 @@ import { Box, LinearProgress } from '@material-ui/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  getEmails,
   selectGetEmailsStatus,
   selectEmails,
   selectActiveListType,
 } from '../../app/slices/EmailListSlice';
-
-import { Email } from '../../types/email';
-import EmailRow from './EmailRow/EmailRow';
+import { getEmails } from '../../app/slices/EmailListSlice/GetEmailsThunk';
 
 import { FixedSizeList as List } from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer';
-
 import EmailListCategories from './EmailListCategories/EmailListCategories';
 import EmailListSettings from './EmailListSettings/EmailListSettings';
+import EmailRow from './EmailRow/EmailRow';
+
 import useQueryParams from '../../hooks/useQueryParams';
-import memoize from 'memoize-one';
+import { SIdebarItemType } from '../../types/sidebar';
 
 const EmailList: React.FC = () => {
   const emails = useSelector(selectEmails);
@@ -30,8 +27,9 @@ const EmailList: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (queryParams.list) dispatch(getEmails(queryParams.list));
-    else dispatch(getEmails(activeListType));
+    if (queryParams.list)
+      dispatch(getEmails(queryParams.list as SIdebarItemType));
+    else dispatch(getEmails(activeListType as SIdebarItemType));
   }, [queryParams]);
 
   return (
