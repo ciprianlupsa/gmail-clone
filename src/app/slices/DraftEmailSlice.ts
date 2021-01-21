@@ -1,5 +1,5 @@
+import { RootState } from './../store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 import thunkMetaInitialization from './../thunkMetaInitialization';
 
 import { ThunkMeta } from './../../types/thunk-meta';
@@ -39,11 +39,18 @@ export const sendDraftEmail = createAsyncThunk(
     emailFormValues: NewEmailFormValues,
     { rejectWithValue, getState, dispatch }
   ) => {
+    const { auth } = getState() as RootState;
+    const loggedInUser = auth.user;
+    if (!loggedInUser || !loggedInUser.email)
+      throw new Error(
+        'Cannot send email. An exception occured with your logged in state.'
+      );
+
     try {
       const newEmail: Email = {
         ...emailFormValues,
         id: '',
-        from: 'fake@gmail.com',
+        from: loggedInUser.email,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         ccTo: null,
         bccTo: null,
